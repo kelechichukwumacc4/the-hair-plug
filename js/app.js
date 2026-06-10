@@ -1,9 +1,4 @@
-// ============================================================
-//  THE HAIR PLUG — App Logic
-//  Features: cart, multi-image gallery, countdown, schedule
-// ============================================================
-
-const WHATSAPP_NUMBER = "234704469406";
+const WHATSAPP_NUMBER = "2347042469406";
 
 // ── Price helpers ─────────────────────────────────────────
 function fmtNGN(ngn) {
@@ -151,7 +146,7 @@ function submitCartOrder() {
   const totalStr  = isNG ? fmtNGN(total) : fmtGHS(total);
   const depStr    = isNG ? depositNGN(total) : depositGHS(total);
   const delivNote = isNG
-    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 2 business days after deposit.\nRemaining 50% must be paid before dispatch."
+    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 3 business days after deposit.\nRemaining 50% must be paid before dispatch."
     : "Items delivered personally on campus when I arrive in Ghana.\nRemaining 50% paid on collection.";
 
   const itemLines = cart.map((item, i) => {
@@ -173,15 +168,15 @@ function submitCartOrder() {
   );
 
   const link = document.createElement("a");
-  link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-  link.target = "_blank";
-  link.rel = "noopener";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  cart = [];
-  updateCartBadge();
-  closeCart();
+link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+link.target = "_blank";
+link.rel = "noopener";
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+cart = [];
+updateCartBadge();
+closeCart();
 }
 
 // ── Rate Banner ───────────────────────────────────────────
@@ -206,7 +201,7 @@ function renderRateBanner() {
     <span class="divider">|</span>
     <span class="rate-item">
       <span class="rate-label">Processing</span>
-      <span class="rate-value">2 business days</span>
+      <span class="rate-value">3 business days</span>
     </span>
   `;
 }

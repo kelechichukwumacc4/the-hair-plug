@@ -1,136 +1,367 @@
 // ============================================================
 //  THE HAIR PLUG — Product Data
-//  Edit this file to add/remove/update wigs and prices
+//  ⭐ This is the ONLY file you need to edit for updates
 // ============================================================
 
-// --- EXCHANGE RATE SETTINGS ---
-// Update this every week with the rate you're using
+// ─────────────────────────────────────────────────────────────
+//  SECTION 1: EXCHANGE RATE
+//  Base prices are in NAIRA (₦). GHS is auto-calculated.
+// ─────────────────────────────────────────────────────────────
 const RATE_CONFIG = {
-  ngn_to_ghs: 0.021,          // e.g. 1 NGN = 0.021 GHS
-  week_label: "Week of 9 June 2025",
-  last_updated: "2025-06-09"
+  ngn_to_ghs: 0.01136,
+  week_label: "Week of 08 June 2026",
+  last_updated: "2026-06-10"
 };
 
-const SCHEDULE ={
-  away_start: "2026-08-01",  //date you leave lagos(orders pause from this day)
-  school_arrival: "2026-08-05",  //date you arrive in school ghana
-  away_end: "2026-10-01",  //date you return to lagos(orders open again)
+// ─────────────────────────────────────────────────────────────
+//  SECTION 2: SCHEDULE & COUNTDOWN
+//  Update these 3 dates whenever your travel plans change.
+//  Everything else (countdowns, order availability) syncs automatically.
+// ─────────────────────────────────────────────────────────────
+const SCHEDULE = {
+  away_start:     "2026-09-17",   // ← date you leave Lagos (orders pause)
+  school_arrival: "2026-09-18",   // ← date you arrive at school in Ghana
+  away_end:       "2026-12-19",   // ← date you return to Lagos (orders reopen)
 
-  //Labels shown to the countdown banners
-label_countdown_to_school: "Back to school in",
-label_away_message: "Currently away at school - Lagod orders resume when im back",
-label_away_sub: "Ghana campus orders: paid & held, delivered on arrival. Lagos orders resume on my return.",
-label_back_soon: "Back in Lagos soon! Orders open in", 
+  label_countdown_to_school: "Back to school in",
+  label_away_message: "Currently away at school — Lagos orders resume when I'm back 🏫",
+  label_away_sub: "Ghana campus orders: paid & held, delivered on arrival. Lagos orders resume on my return.",
+  label_back_soon: "Back in Lagos soon! Orders open in",
 };
 
-// --- PRODUCTS ---
-// To add a wig: copy one block, paste at the end of the array, edit details
-// image: put the image file in the images/wigs/ folder and write the filename here
-// price_ghs: price in Ghana Cedis (NGN price is auto-calculated from rate above)
-// badge: optional label like "New", "Bestseller", "Last 1" — leave as "" to hide
-// available: set to false to mark as sold out without deleting it
 
 const PRODUCTS = [
   {
     id: 1,
-    name: "Loose Deep Wave",
-    description: "20 inches · HD lace frontal · 180% density · natural black",
-    price_ngn: 45000,
-    image: "images/wigs/loose-deep-wave.jpg",
-    badge: "Bestseller",
-    available: true
-  },
-  {
-    id: 2,
-    name: "Bone Straight Bob",
-    description: "14 inches · 13x4 lace front · 150% density · natural black",
-    lengths: [
-      {label: "14 inches", price_ngn: 38000},
-      {label: "18 inches", price_ngn: 45000},
-      {label: "20 inches", price_ngn: 54000},
+    name: "Quality Wig Ginger",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 60000,
+    images: [
+      "images/wigs/quality-wig-ginger.jpg",
+      "images/wigs/quality-wig-ginger-2.jpg",
     ],
-    image: "images/wigs/bone-straight-bob.jpg",
-    badge: "New",
-    available: true
-  },
-  {
-    id: 3,
-    name: "Body Wave Frontal Wig",
-    description: "22 inches · 13x6 lace frontal · 200% density · can be coloured",
-    price_ngn: 50000,
-    image: "images/wigs/body-wave.jpg",
     badge: "",
     available: true
   },
-  {
+   {
+    id: 2,
+    name: "Quality Student Bob",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 65000,
+    images: [
+      "images/wigs/quality-student-bob-1.jpeg",
+      "images/wigs/quality-student-bob.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 3,
+    name: "Soft Flow Natural with HD illusion lace",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 70000,
+    images: [
+      "images/wigs/soft-flow-natural-1.jpeg",
+      "images/wigs/soft-flow-natural-2.jpeg",
+      "images/wigs/soft-flow-natural.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
     id: 4,
-    name: "Kinky Curly Unit",
-    description: "18 inches · 4x4 closure · 150% density · natural black",
-    price_ngn: 45000,
-    image: "images/wigs/kinky-curly.jpg",
-    badge: "Last 1",
+    name: "Brown Balayage Bussdown (Ship on Monday)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 65000,
+    image: "images/wigs/brown-balayage-bussdown.jpeg",
+    badge: "",
     available: true
   },
   {
     id: 5,
-    name: "Water Wave Long",
-    description: "24 inches · 13x4 lace front · 180% density · natural black",
-    price_ngn: 65000,
-    image: "images/wigs/water-wave-long.jpg",
+    name: "Dream Wig Black (Ship on Monday)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 60000,
+    images: [
+      "images/wigs/dream-wig-black-1.jpeg",
+      "images/wigs/dream-wig-black-2.jpeg",
+      "images/wigs/dream-wig-black.jpeg",
+    ],
     badge: "",
-    available: false   // sold out example
-  }
+    available: true
+  },
+  {
+    id: 6,
+    name: "Silky Straight Bussdown",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 65000,
+    images: [
+      "images/wigs/silky-straight-bussdown-1.jpeg",
+      "images/wigs/silky-straight-bussdown-2.jpeg",
+      "images/wigs/silky-straight-bussdown.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 7,
+    name: "Silky Straight Bussdown Brown Highlights",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 65000,
+    images: [
+      "images/wigs/silly-straight-bussdown-brown-highlight-1.jpeg",
+      "images/wigs/silly-straight-bussdown-brown-highlight.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 8,
+    name: "Lush Curls Pink With Illusion HD Lace",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 75000,
+    images: [
+      "images/wigs/lush-curls-pink-1.jpeg",
+      "images/wigs/lush-curls-pink.jpeg",
+      "images/wigs/lush-curls-pink-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 9,
+    name: "Brown blonde girl (Ship on Tuesday)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 60000,
+    images: [
+      "images/wigs/brown-blonde-girl-1.jpeg",
+      "images/wigs/brown-blonde-girl.jpeg",
+      "images/wigs/brown-blonde-girl-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 10,
+    name: "Soft Flow Blonde With Illusion HD Lace",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 70000,
+    images: [
+      "images/wigs/soft-flow-blonde-1.jpeg",
+      "images/wigs/soft-flow-blonde.jpeg",
+      "images/wigs/soft-flow-blonde-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 11,
+    name: "Soft Flow Brown With Illusion HD Lace",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 70000,
+    images: [
+      "images/wigs/soft-flow-brown-highlights-1.jpeg",
+      "images/wigs/soft-flow-brown-highlights.jpeg",
+      "images/wigs/soft-flow-brown-highlights-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 12,
+    name: "Bounce Curls Plus (5x5 closure)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    price_ngn: 205000,
+    images: [
+      "images/wigs/bounce-curl-plus.jpg",
+      "images/wigs/bounce-curl-plus-1.jpg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 13,
+    name: "Sdd Body Wave Wig (5x5 closure)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+   lengths: [
+      { label: "30 inches", price_ngn: 200000 },
+      { label: "32 inches", price_ngn: 220000 },
+    ],
+    image: "images/wigs/sdd-body-wave-wig.jpeg",
+    badge: "",
+    available: true
+  },
+
+   {
+    id: 14,
+    name: "Closure Fringe Bob Wig",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+   lengths: [
+      { label: "8 inches", price_ngn: 80000 },
+      { label: "10 inches", price_ngn: 85000 },
+      { label: "12 inches", price_ngn: 95000 },
+      { label: "14 inches", price_ngn: 100000 },
+    ],
+    images: [
+      "images/wigs/fringe-bob-wig.jpeg",
+      "images/wigs/fringe-bob-wig-1.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 15,
+    name: "Bounce Curls (5x5 closure)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    price_ngn: 175000,
+    image: "images/wigs/bounce-curl.jpg",
+    badge: "",
+    available: true
+  },
+   {
+    id: 16,
+    name: "Sinach Plus (5x5 Closure)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    price_ngn: 145000,
+    images: [
+      "images/wigs/sinach-plus.jpeg",
+      "images/wigs/sinach-plus-1.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 17,
+    name: "Vietnam SDD Bounce",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    lengths: [
+      { label: "12 inches", price_ngn: 98600 },
+      { label: "12 inches (5x5 Closure)", price_ngn: 115000 },
+      { label: "14 inches", price_ngn: 113800 },
+      { label: "14 inches (5x5 Closure)", price_ngn: 135000 },
+      { label: "16 inches", price_ngn: 125700 },
+      { label: "16 inches (5x5 Closure)", price_ngn: 150000 },
+      { label: "18 inches", price_ngn: 135500 },
+      { label: "20 inches", price_ngn: 151000 },
+      { label: "20 inches (5x5 Closure)", price_ngn: 162000 },
+      { label: "22 inches", price_ngn: 163500 },
+      { label: "24 inches", price_ngn: 174500 },
+    ],
+    images: [
+      "images/wigs/vietnam-sdd-bounce.jpeg",
+      "images/wigs/vietnam-sdd-bounce-1.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 18,
+    name: "SDD Bounce Wig Full Frontal",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    price_ngn: 198000,
+    images: [
+      "images/wigs/sdd-bounce-wig.jpeg",
+      "images/wigs/sdd-bounce-wig-1.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 19,
+    name: "Fasy Wig",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    lengths: [
+      { label: "12 inches", price_ngn: 120000 },
+      { label: "18 inches", price_ngn: 145000 },
+      { label: "20 inches", price_ngn: 168000 },
+    ],
+    images: [
+      "images/wigs/fasy-wig.jpeg",
+      "images/wigs/fasy-wig-1.jpeg",
+      "images/wigs/fasy-wig-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 20,
+    name: "Quality Wig Ginger",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    quality: "Blend",
+    price_ngn: 60000,
+    images: [
+      "images/wigs/quality-wig-ginger.jpg",
+      "images/wigs/quality-wig-ginger-2.jpg",
+    ],
+    badge: "",
+    available: true
+  },
 ];
 
-// --- DELIVERY INFO ---
+// ─────────────────────────────────────────────────────────────
+//  SECTION 4: DELIVERY INFO
+// ─────────────────────────────────────────────────────────────
 const DELIVERY_INFO = {
   ghana: {
     title: "Ghana (Campus Delivery 🇬🇭)",
     details: [
-      "Items delivered personally when I arrive at school",
-      "50% deposit required to validate and hold your order",
+      "Pay 50% deposit to confirm and hold your order",
       "Remaining 50% balance must be paid before the wig is packed and brought",
-      "Balance paid on collection",
+      "Items delivered personally when I arrive at school",
+      "Processing takes 2 business days after full payment",
       "Payment via MoMo — details sent on order confirmation"
     ]
   },
   nigeria: {
     title: "Lagos, Nigeria (Bolt Delivery 🇳🇬)",
     details: [
+      "Pay 50% deposit to confirm your order",
+      "Remaining 50% balance must be paid before wig is dispatched via Bolt",
+      "Processing takes 2 business days after full payment is received",
       "Delivery via Bolt Send — Lagos only for now",
-      "Processing takes 2 business days after 50% payment",
-      "50% deposit required to validate your order",
-      "Remaining 50% balance must be paid before the wig is dispatched via Bolt",
-      "Delivery fee quoted at checkout based on your location",
+      "Delivery fee quoted based on your location",
       "Payment via bank transfer — details sent on order confirmation"
     ]
   }
 };
 
+// ─────────────────────────────────────────────────────────────
+//  SECTION 5: FAQ
+// ─────────────────────────────────────────────────────────────
 const FAQS = [
   {
-    q:"Do you offer refunds?",
-    a:"Yes, we do - but refund requests must be made within 24 hours of receiving your order, and only if the fault is on our end.<br>This includes situations where we sent the wrong wig or mixed up an order. We do not accept refunds for change-of-mind pirchases."
+    q: "Do you offer refunds?",
+    a: "Yes, we do — but refund requests must be made within 24 hours of receiving your order, and only if the fault is on our end. This includes situations where we sent the wrong wig or mixed up an order. We do not accept refunds for change-of-mind purchases."
   },
   {
     q: "Can I get an exchange instead of a refund?",
-    a: "Yes! If we sent the wrong item, we'll happily arrange an exchange. <br>Reach out via WhatsApp within 24 hours of delivery with photos of what you received."
+    a: "Yes! If we sent the wrong item, we'll happily arrange an exchange. Reach out via WhatsApp within 24 hours of delivery with photos of what you received."
   },
   {
     q: "How does the 50% deposit work?",
-    a: "Paying 50% of the wig price confirms and holds your order.<br>The remaining 50% must be paid before your wig is packed and sent out - whether that's dispatched via Bolt (Lagos) or brought to school (Ghana)."
+    a: "Paying 50% of the wig price confirms and holds your order. The remaining 50% must be paid before your wig is packed and sent out — whether dispatched via Bolt (Lagos) or brought to school (Ghana)."
   },
   {
     q: "How long does processing take?",
-    a: "All orders take 2 business days to process after full payment is received. You'll be notified once your order is on its way. "
+    a: "All orders take 2 business days to process after full payment is received. You'll be notified once your order is on its way."
   },
   {
     q: "Do you deliver outside Lagos?",
-    a: "Not yet - Lagos delivery via Bolt Send only for now. We're working on expanding. Ghana customers receive their orders on-campus personally."
+    a: "Not yet — Lagos delivery via Bolt Send only for now. We're working on expanding. Ghana customers receive their orders on-campus personally."
   },
   {
     q: "How do I pay?",
     a: "Ghana customers pay via MoMo. Nigerian customers pay via bank transfer. Payment details are sent to you once you place your order via WhatsApp."
   }
-
 ];
