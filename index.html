@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="The Hair Plug — Premium wigs delivered to Ghana and Nigeria. HD lace, body wave, bone straight and more."/>
+  <title>The Hair Plug</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💛</text></svg>"/>
+</head>
+<body>
+
+  <!-- Rate Banner -->
+  <div class="rate-banner">
+    <span id="rate-display">Loading rate...</span>
+  </div>
+
+  <!-- Nav -->
+  <nav>
+    <span class="nav-logo">The Hair <span>Plug</span></span>
+    <ul class="nav-links">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#how-to-order">How to Order</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <!-- Cart button in nav -->
+    <button class="cart-nav-btn" onclick="openCart()" aria-label="View cart">
+      🛒
+      <span class="cart-badge" id="cart-badge" style="display:none">0</span>
+    </button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-eyebrow">Ghana · Nigeria · Premium Wigs</p>
+    <h1>Your plug for<br><em>gorgeous hair</em></h1>
+    <p>HD lace, body wave, bone straight & more — delivered to campus in Ghana or via Bolt in Lagos.</p>
+    <a href="#shop" class="hero-cta">Shop the Collection</a>
+  </section>
+
+  <!-- Schedule Banner + Countdown (filled by JS) -->
+  <div id="schedule-banner"></div>
+
+  <!-- Shop -->
+  <section class="section" id="shop">
+    <h2 class="section-title">Current Collection</h2>
+    <p class="section-sub">Prices in ₦ (Naira) and GH₵ (Cedis) — converted at the weekly rate above. Processing takes 2 business days after 50% deposit.</p>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All Wigs</button>
+      <button class="filter-btn" data-filter="available">Available</button>
+      <button class="filter-btn" data-filter="sold-out">Sold Out</button>
+    </div>
+
+    <div class="product-grid" id="product-grid"></div>
+  </section>
+
+  <!-- How to Order -->
+  <section class="section how-section" id="how-to-order">
+    <h2 class="section-title" style="color:var(--white)">How to Order</h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.5)">50% deposit confirms your order. Remaining 50% paid before your wig is packed &amp; sent.</p>
+    <div class="how-grid">
+      <div class="how-card" id="how-ghana"></div>
+      <div class="how-card" id="how-nigeria"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq-section" id="faq">
+    <h2 class="section-title" style="text-align:center">Frequently Asked Questions</h2>
+    <p class="section-sub" style="text-align:center;margin-bottom:40px">Everything you need to know before ordering.</p>
+    <div id="faq-list" style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:12px;"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-brand">The Hair Plug 💛</p>
+    <p>Ghana &amp; Nigeria &nbsp;·&nbsp; DMs always open &nbsp;·&nbsp; 50% deposit confirms your order</p>
+  </footer>
+
+  <!-- ── Cart Toast Notification ──────────────────────────── -->
+  <div class="cart-toast" id="cart-toast"></div>
+
+  <!-- ── Cart Modal ────────────────────────────────────────── -->
+  <div class="cart-overlay" id="cart-overlay">
+    <div class="cart-modal">
+      <div class="cart-header">
+        <h2>Your Cart 🛒</h2>
+        <button class="modal-close" onclick="closeCart()">✕</button>
+      </div>
+
+      <!-- Cart items (filled by JS) -->
+      <div class="cart-items" id="cart-items"></div>
+
+      <!-- Totals -->
+      <div class="cart-totals">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <span>
+            <span id="cart-total-ngn"></span>
+            <span class="cart-ghs"> / <span id="cart-total-ghs"></span></span>
+          </span>
+        </div>
+        <div class="cart-total-row cart-deposit-row">
+          <span>50% Deposit</span>
+          <span>
+            <span id="cart-deposit-ngn"></span>
+            <span class="cart-ghs"> / <span id="cart-deposit-ghs"></span></span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Payment reminder -->
+      <p class="cart-reminder">
+        💡 50% deposit confirms your order. Remaining 50% paid before your wigs are packed &amp; sent.
+      </p>
+
+      <!-- Order form -->
+      <label for="cart-name">Your Name</label>
+      <input type="text" id="cart-name" placeholder="e.g. Amaka Okafor"/>
+
+      <label for="cart-location">Your Location</label>
+      <select id="cart-location">
+        <option value="">— Select your location —</option>
+        <option value="ghana">Ghana (Campus pickup)</option>
+        <option value="nigeria">Lagos, Nigeria (Bolt delivery)</option>
+      </select>
+
+      <label for="cart-contact">WhatsApp / Phone Number</label>
+      <input type="tel" id="cart-contact" placeholder="e.g. +234 801 234 5678" inputmode="tel"/>
+
+      <label for="cart-notes">Any notes? (optional)</label>
+      <textarea id="cart-notes" placeholder="e.g. delivery time, colour preference..."></textarea>
+
+      <button class="modal-submit" onclick="submitCartOrder()">Send Order via WhatsApp →</button>
+      <p class="whatsapp-note">Opens WhatsApp with all your items pre-filled.</p>
+    </div>
+  </div>
+
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
