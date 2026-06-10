@@ -1,3 +1,10 @@
+// ============================================================
+//  THE HAIR PLUG — App Logic
+//  Features: cart, multi-image gallery, countdown, schedule
+// ============================================================
+
+const WHATSAPP_NUMBER = "234704469406";
+
 // ── Price helpers ─────────────────────────────────────────
 function fmtNGN(ngn) {
   return "₦ " + Math.round(ngn).toLocaleString("en-NG", { minimumFractionDigits: 0 });
@@ -165,7 +172,13 @@ function submitCartOrder() {
     `\n_Rate: 1 NGN = ${RATE_CONFIG.ngn_to_ghs} GHS (${RATE_CONFIG.week_label})_`
   );
 
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+  const link = document.createElement("a");
+  link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  link.target = "_blank";
+  link.rel = "noopener";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
   cart = [];
   updateCartBadge();
   closeCart();
