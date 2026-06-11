@@ -24,7 +24,7 @@ const SCHEDULE = {
   away_end:       "2026-12-19",   // ← date you return to Lagos (orders reopen)
 
   label_countdown_to_school: "Back to school in",
-  label_away_message: "Currently away at school — Lagos orders resume when I'm back 🏫",
+  label_away_message: "Currently away at school — Lagos orders resume when I'm back",
   label_away_sub: "Ghana campus orders: paid & held, delivered on arrival. Lagos orders resume on my return.",
   label_back_soon: "Back in Lagos soon! Orders open in",
 };
@@ -319,7 +319,6 @@ const DELIVERY_INFO = {
       "Pay 50% deposit to confirm and hold your order",
       "Remaining 50% balance must be paid before the wig is packed and brought",
       "Items delivered personally when I arrive at school",
-      "Processing takes 2 business days after full payment",
       "Payment via MoMo — details sent on order confirmation"
     ]
   },
@@ -328,7 +327,6 @@ const DELIVERY_INFO = {
     details: [
       "Pay 50% deposit to confirm your order",
       "Remaining 50% balance must be paid before wig is dispatched via Bolt",
-      "Processing takes 2 business days after full payment is received",
       "Delivery via Bolt Send — Lagos only for now",
       "Delivery fee quoted based on your location",
       "Payment via bank transfer — details sent on order confirmation"

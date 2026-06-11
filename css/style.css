@@ -84,8 +84,17 @@ nav {
   justify-content: space-between;
   height: 64px;
   position: sticky;
-  top: 37px;
-  z-index: 99;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-logo-img {
+  height: 38px;
+  width: auto;
 }
 .nav-logo {
   font-family: var(--font-display);
@@ -94,7 +103,6 @@ nav {
   color: var(--espresso);
   letter-spacing: -0.01em;
 }
-
 .nav-logo span {
   color: var(--gold);
 }
@@ -224,6 +232,14 @@ nav {
 .hero-cta:hover {
   background: var(--gold-light);
   transform: translateY(-2px);
+}
+.hero-motto {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold, #c9a84c);
+  margin: -8px 0 20px;
+  opacity: 0.9;
 }
 
 /* ── Section Wrapper ─────────────────────────────────────── */
@@ -1268,4 +1284,49 @@ footer p { opacity: 0.5; }
 .social-icon svg {
   width: 20px;
   height: 20px;
+}
+
+
+/* ── Animated Info Ticker ────────────────────────────────── */
+.info-ticker {
+  background: var(--espresso);
+  overflow: hidden;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(201,150,58,0.2);
+}
+.ticker-track {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  animation: ticker-scroll 22s linear infinite;
+  will-change: transform;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 40px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+.ticker-item .ticker-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+.ticker-item span.highlight {
+  color: var(--gold-light);
+  font-weight: 500;
+}
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }

@@ -1,4 +1,9 @@
-const WHATSAPP_NUMBER = "2347042469406";
+// ============================================================
+//  THE HAIR PLUG — App Logic
+//  Features: cart, multi-image gallery, countdown, schedule
+// ============================================================
+
+const WHATSAPP_NUMBER = "234704469406";
 
 // ── Price helpers ─────────────────────────────────────────
 function fmtNGN(ngn) {
@@ -146,7 +151,7 @@ function submitCartOrder() {
   const totalStr  = isNG ? fmtNGN(total) : fmtGHS(total);
   const depStr    = isNG ? depositNGN(total) : depositGHS(total);
   const delivNote = isNG
-    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 3 business days after deposit.\nRemaining 50% must be paid before dispatch."
+    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 2 business days after deposit.\nRemaining 50% must be paid before dispatch."
     : "Items delivered personally on campus when I arrive in Ghana.\nRemaining 50% paid on collection.";
 
   const itemLines = cart.map((item, i) => {
@@ -164,46 +169,40 @@ function submitCartOrder() {
     `*Number:* ${contact}\n` +
     (notes ? `*Notes:* ${notes}\n` : "") +
     `\n${delivNote}\n` +
-    `\n_Rate: 1 NGN = ${RATE_CONFIG.ngn_to_ghs} GHS (${RATE_CONFIG.week_label})_`
+    ``
   );
 
   const link = document.createElement("a");
-link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-link.target = "_blank";
-link.rel = "noopener";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-cart = [];
-updateCartBadge();
-closeCart();
+  link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  link.target = "_blank";
+  link.rel = "noopener";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  cart = [];
+  updateCartBadge();
+  closeCart();
 }
 
-// ── Rate Banner ───────────────────────────────────────────
-function renderRateBanner() {
-  const el = document.getElementById("rate-display");
+// ── Animated Info Ticker ─────────────────────────────────
+function renderTicker() {
+  const el = document.getElementById("ticker-track");
   if (!el) return;
-  el.innerHTML = `
-    <span class="rate-item">
-      <span class="rate-label">Rate</span>
-      <span class="rate-value">1 NGN = ${RATE_CONFIG.ngn_to_ghs} GHS</span>
-    </span>
-    <span class="divider">|</span>
-    <span class="rate-item">
-      <span class="rate-label">Updated</span>
-      <span class="rate-value">${RATE_CONFIG.week_label}</span>
-    </span>
-    <span class="divider">|</span>
-    <span class="rate-item">
-      <span class="rate-label">Deposit</span>
-      <span class="rate-value">50% to confirm · 50% before dispatch</span>
-    </span>
-    <span class="divider">|</span>
-    <span class="rate-item">
-      <span class="rate-label">Processing</span>
-      <span class="rate-value">3 business days</span>
-    </span>
-  `;
+  // Items to scroll — duplicated for seamless loop
+  const items = [
+    `<span class="highlight">1 NGN = ${RATE_CONFIG.ngn_to_ghs} GHS</span>`,
+    `Rate updated: <span class="highlight">${RATE_CONFIG.week_label}</span>`,
+    `Processing: <span class="highlight">3 business days</span> after deposit`,
+    `50% deposit confirms your order`,
+    `Remaining 50% paid before dispatch`,
+    `Lagos delivery via <span class="highlight">Bolt Send</span>`,
+    `Ghana orders delivered personally on campus`,
+  ];
+  const html = items.map(text =>
+    `<span class="ticker-item"><span class="ticker-dot"></span>${text}</span>`
+  ).join("");
+  // Duplicate for seamless infinite scroll
+  el.innerHTML = html + html;
 }
 
 // ── Schedule Banner ───────────────────────────────────────
@@ -508,7 +507,7 @@ function setupPhoneInputs() {
 
 // ── Init ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  renderRateBanner();
+  renderTicker();
   renderScheduleBanner();
   renderProducts(PRODUCTS);
   setupFilters();
