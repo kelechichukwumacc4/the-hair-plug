@@ -3,7 +3,7 @@
 //  Features: cart, multi-image gallery, countdown, schedule
 // ============================================================
 
-const WHATSAPP_NUMBER = "234704469406";
+const WHATSAPP_NUMBER = "2347042469406";
 
 // ── Price helpers ─────────────────────────────────────────
 function fmtNGN(ngn) {
