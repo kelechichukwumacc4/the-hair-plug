@@ -294,15 +294,163 @@ const PRODUCTS = [
     badge: "",
     available: true
   },
-  {
+ 
+   {
     id: 20,
-    name: "Quality Wig Ginger",
+    name: "SDD Luxury Bone STW (Closure 6x5)",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
-    quality: "Blend",
-    price_ngn: 60000,
+    lengths: [
+      { label: "10 inches", price_ngn: 165000 },
+      { label: "12 inches", price_ngn: 185000 },
+    ],
     images: [
-      "images/wigs/quality-wig-ginger.jpg",
-      "images/wigs/quality-wig-ginger-2.jpg",
+      "images/wigs/sdd-luxury-1.jpeg",
+      "images/wigs/sdd-luxury.jpeg",
+      "images/wigs/sdd-luxury-2.jpeg",
+      "images/wigs/sdd-luxury-3.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 21,
+    name: "Full Frontal Deep Wave",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    lengths: [
+      { label: "28 inches", price_ngn: 175000 },
+      { label: "30 inches", price_ngn: 195000 },
+    ],
+    images: [
+      "images/wigs/full-frontal-1.jpeg",
+      "images/wigs/full-frontal.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 22,
+    name: "Essy Wig (Closure 5x5)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    price_ngn: 135000,
+    images: [
+      "images/wigs/essy-wig-1.jpeg",
+      "images/wigs/essy-wig.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 23,
+    name: "Shully Bounce (Closure 5x5)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+     lengths: [
+      { label: "18 inches", price_ngn: 185000 },
+    ],
+    images: [
+      "images/wigs/shully-bounce-1.jpeg",
+      "images/wigs/shully-bounce.jpeg",
+      "images/wigs/shully-bounce-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 24,
+    name: "Peal Bounce (Closure 4x4)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    price_ngn: 186000,
+    images: [
+      "images/wigs/Peal-bounce-dd-1.jpeg",
+      "images/wigs/Peal-bounce-dd.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+    {
+    id: 25,
+    name: "Tasy Wig",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+     lengths: [
+      { label: "10 inches", price_ngn: 120000 },
+    ],
+    images: [
+      "images/wigs/tasy-wig-1.jpeg",
+      "images/wigs/tasy-wig.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 26,
+    name: "Pixxy Wig (Closure 5x5)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+     lengths: [
+      { label: "16 inches", price_ngn: 165500 },
+    ],
+    images: [
+      "images/wigs/Pixxy-wig-1.jpeg",
+      "images/wigs/Pixxy-wig.jpeg",
+      "images/wigs/Pixxy-wig-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 27,
+    name: "SDD Silky Wig (Closure 5x5)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+     lengths: [
+      { label: "24 inches", price_ngn: 288500 },
+    ],
+    images: [
+      "images/wigs/sdd-silky-wig-1.jpeg",
+      "images/wigs/sdd-silky-wig.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 28,
+    name: "Tacy Wig (Closure 4x4)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+     lengths: [
+      { label: "18 inches", price_ngn: 130000 },
+      { label: "20 inches", price_ngn: 144000 },
+      { label: "22 inches", price_ngn: 167000 },
+      { label: "24 inches", price_ngn: 196000 },
+      { label: "26 inches", price_ngn: 230000 },
+    ],
+    images: [
+      "images/wigs/tacy-wig-1.jpeg",
+      "images/wigs/tacy-wig.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+  {
+    id: 29,
+    name: "Sinach Wig Wine (Closure 5x5)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+     lengths: [
+      { label: "12 inches", price_ngn: 145000 },
+    ],
+    images: [
+      "images/wigs/sinach-wig-red-1.jpeg",
+      "images/wigs/sinach-wig-red.jpeg",
+    ],
+    badge: "",
+    available: true
+  },
+   {
+    id: 30,
+    name: "Tacy Wig with Highlights (Closure 5x5)",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+     lengths: [
+      { label: "20 inches", price_ngn: 165000 },
+    ],
+    images: [
+      "images/wigs/tacy-wig-highlights-1.jpeg",
+      "images/wigs/tacy-wig-highlights.jpeg",
     ],
     badge: "",
     available: true
