@@ -151,7 +151,7 @@ function submitCartOrder() {
   const totalStr  = isNG ? fmtNGN(total) : fmtGHS(total);
   const depStr    = isNG ? depositNGN(total) : depositGHS(total);
   const delivNote = isNG
-    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 2 business days after deposit.\nRemaining 50% must be paid before dispatch."
+    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 3 business days after deposit.\nRemaining 50% must be paid before dispatch."
     : "Items delivered personally on campus when I arrive in Ghana.\nRemaining 50% paid on collection.";
 
   const itemLines = cart.map((item, i) => {
