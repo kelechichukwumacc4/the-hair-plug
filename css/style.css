@@ -1330,3 +1330,61 @@ footer p { opacity: 0.5; }
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+
+/* ── WhatsApp Fallback Overlay ───────────────────────────── */
+.wa-fallback-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,10,0,0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.wa-fallback-box {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  animation: modal-in 0.25s ease;
+}
+.wa-fallback-icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+.wa-fallback-box h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--espresso);
+}
+.wa-fallback-text {
+  font-size: 0.85rem;
+  opacity: 0.65;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.wa-fallback-btn {
+  display: block;
+  margin-top: 18px;
+  text-decoration: none;
+}
+.wa-fallback-close {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: var(--espresso);
+  opacity: 0.4;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.wa-fallback-close:hover { opacity: 0.8; }

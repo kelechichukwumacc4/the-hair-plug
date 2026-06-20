@@ -172,16 +172,59 @@ function submitCartOrder() {
     ``
   );
 
+  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+
+  // Try to open automatically
   const link = document.createElement("a");
-  link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  link.href = waLink;
   link.target = "_blank";
   link.rel = "noopener";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+
+  // Always show a manual fallback overlay too, in case auto-open
+  // is blocked (in-app browsers, some Android settings, etc.)
+  showWhatsAppFallback(waLink);
+
   cart = [];
   updateCartBadge();
   closeCart();
+}
+
+// Manual fallback — a small confirmation overlay shown after every
+// order attempt so the customer always has a guaranteed way to reach
+// WhatsApp, even if the automatic redirect was silently blocked.
+function showWhatsAppFallback(waLink) {
+  const existing = document.getElementById("wa-fallback-overlay");
+  if (existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.id = "wa-fallback-overlay";
+  overlay.className = "wa-fallback-overlay";
+  overlay.innerHTML = `
+    <div class="wa-fallback-box">
+      <p class="wa-fallback-icon">💛</p>
+      <h2>Order Ready!</h2>
+      <p class="wa-fallback-text">WhatsApp should have opened in a new tab.</p>
+      <p class="wa-fallback-text">If nothing happened, tap below:</p>
+      <a href="${waLink}" target="_blank" rel="noopener" class="modal-submit wa-fallback-btn">
+        Open WhatsApp →
+      </a>
+      <button class="wa-fallback-close" onclick="document.getElementById('wa-fallback-overlay').remove(); document.body.style.overflow='';">
+        Close
+      </button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.body.style.overflow = "hidden";
+
+  overlay.addEventListener("click", function(e) {
+    if (e.target === this) {
+      this.remove();
+      document.body.style.overflow = "";
+    }
+  });
 }
 
 // ── Animated Info Ticker ─────────────────────────────────
