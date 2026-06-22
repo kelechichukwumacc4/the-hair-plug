@@ -8,7 +8,7 @@
 //  Base prices are in NAIRA (₦). GHS is auto-calculated.
 // ─────────────────────────────────────────────────────────────
 const RATE_CONFIG = {
-  ngn_to_ghs: 0.01170,
+  ngn_to_ghs: 0.01156,
   week_label: "Week of 14 June 2026",
   last_updated: "2026-06-17"
 };
