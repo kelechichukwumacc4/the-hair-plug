@@ -39,10 +39,16 @@
       <li><a href="#how-to-order">How to Order</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
-    <button class="cart-nav-btn" onclick="openCart()" aria-label="View cart">
-      🛒
-      <span class="cart-badge" id="cart-badge" style="display:none">0</span>
-    </button>
+    <div class="nav-actions">
+      <button class="fav-nav-btn" onclick="openFavPanel()" aria-label="View favourites">
+        ♡
+        <span class="fav-badge" id="fav-badge" style="display:none">0</span>
+      </button>
+      <button class="cart-nav-btn" onclick="openCart()" aria-label="View cart">
+        🛒
+        <span class="cart-badge" id="cart-badge" style="display:none">0</span>
+      </button>
+    </div>
   </nav>
 
   <!-- Animated info ticker (rate + processing — replaces dark banner) -->
@@ -156,7 +162,27 @@
     </div>
   </div>
 
- <script src="js/products.js?v=2"></script>
-<script src="js/app.js?v=2"></script>
+  <!-- Favourites backdrop -->
+  <div class="fav-backdrop" id="fav-backdrop"></div>
+
+  <!-- Favourites Panel (slides in from right) -->
+  <div class="fav-panel" id="fav-panel">
+    <div class="fav-panel-header">
+      <h2>My Favourites ♥</h2>
+      <button class="modal-close" onclick="closeFavPanel()">✕</button>
+    </div>
+    <div class="fav-list" id="fav-list">
+      <!-- Filled by JS -->
+    </div>
+    <div class="fav-actions" id="fav-actions" style="display:none">
+      <button class="fav-add-all-btn" onclick="addAllFavsToCart()">
+        Add All to Cart 🛒
+      </button>
+      <p class="fav-add-all-note">Available items only · Select lengths above first</p>
+    </div>
+  </div>
+
+ <script src="js/products.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>

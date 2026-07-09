@@ -84,6 +84,204 @@ function updateCartBadge() {
   badge.style.display = total > 0 ? "flex" : "none";
 }
 
+// ══════════════════════════════════════════════════════════
+//  FAVOURITES
+//  Persisted to localStorage so they survive page closes.
+// ══════════════════════════════════════════════════════════
+const FAV_KEY = "thp_favourites"; // localStorage key
+
+// Load saved favourite IDs from localStorage
+function loadFavourites() {
+  try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }
+  catch { return []; }
+}
+
+// Save favourite IDs to localStorage
+function saveFavourites(ids) {
+  localStorage.setItem(FAV_KEY, JSON.stringify(ids));
+}
+
+function isFavourited(productId) {
+  return loadFavourites().includes(productId);
+}
+
+function toggleFavourite(productId) {
+  let favs = loadFavourites();
+  if (favs.includes(productId)) {
+    favs = favs.filter(id => id !== productId);
+  } else {
+    favs.push(productId);
+  }
+  saveFavourites(favs);
+
+  // Update heart icon on the card (if visible)
+  const heart = document.querySelector(`.fav-btn[data-id="${productId}"]`);
+  if (heart) {
+    const filled = favs.includes(productId);
+    heart.classList.toggle("fav-active", filled);
+    heart.setAttribute("aria-label", filled ? "Remove from favourites" : "Add to favourites");
+    heart.innerHTML = filled ? "♥" : "♡";
+  }
+
+  updateFavBadge();
+
+  // If the favourites panel is open, re-render it live
+  const panel = document.getElementById("fav-panel");
+  if (panel && panel.classList.contains("open")) renderFavPanel();
+}
+
+function updateFavBadge() {
+  const favs  = loadFavourites();
+  const badge = document.getElementById("fav-badge");
+  if (!badge) return;
+  badge.textContent = favs.length;
+  badge.style.display = favs.length > 0 ? "flex" : "none";
+}
+
+// ── Favourites Panel ──────────────────────────────────────
+function openFavPanel() {
+  renderFavPanel();
+  document.getElementById("fav-panel").classList.add("open");
+  document.getElementById("fav-backdrop").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeFavPanel() {
+  document.getElementById("fav-panel").classList.remove("open");
+  document.getElementById("fav-backdrop").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function renderFavPanel() {
+  const list    = document.getElementById("fav-list");
+  const actions = document.getElementById("fav-actions");
+  if (!list) return;
+
+  const favIds  = loadFavourites();
+  const ordersOpen = isOrderingOpen();
+
+  if (favIds.length === 0) {
+    list.innerHTML = `
+      <div class="fav-empty">
+        <span class="fav-empty-icon">♡</span>
+        <p>No favourites yet!</p>
+        <p class="fav-empty-sub">Tap the ♡ on any wig to save it here.</p>
+      </div>`;
+    if (actions) actions.style.display = "none";
+    return;
+  }
+
+  // Match saved IDs to PRODUCTS (wig may be sold out — still show it)
+  const favProducts = favIds
+    .map(id => PRODUCTS.find(p => p.id === id))
+    .filter(Boolean);
+
+  list.innerHTML = favProducts.map(p => {
+    const price    = getBasePrice(p);
+    const thumb    = Array.isArray(p.images) ? p.images[0] : (p.image || "");
+    const soldOut  = !p.available;
+    const hasLen   = p.lengths && p.lengths.length > 0;
+
+    const lengthSelect = hasLen ? `
+      <select class="fav-length-select" id="fav-len-${p.id}"
+        onchange="updateFavPrice(${p.id}, this.value)">
+        ${p.lengths.map((l,i) => `<option value="${l.price_ngn}" ${i===0?"selected":""}>${l.label}</option>`).join("")}
+      </select>` : "";
+
+    const cartBtn = soldOut
+      ? `<button class="fav-cart-btn" disabled>Sold Out</button>`
+      : !ordersOpen
+        ? `<button class="fav-cart-btn" disabled>Orders Closed</button>`
+        : `<button class="fav-cart-btn" onclick="addToCartFromFav(${p.id})">Add to Cart 🛒</button>`;
+
+    return `
+      <div class="fav-item ${soldOut ? "fav-item-soldout" : ""}">
+        <div class="fav-thumb-wrap">
+          ${thumb
+            ? `<img src="${thumb}" alt="${p.name}" class="fav-thumb" onerror="this.style.display='none'">`
+            : `<div class="fav-thumb-placeholder">♡</div>`}
+          ${soldOut ? `<span class="fav-sold-badge">Sold Out</span>` : ""}
+        </div>
+        <div class="fav-item-info">
+          <p class="fav-item-name">${p.name}</p>
+          <p class="fav-item-price" id="fav-price-${p.id}">${fmtNGN(price)} <span class="fav-ghs">/ ${fmtGHS(price)}</span></p>
+          ${lengthSelect}
+          ${cartBtn}
+        </div>
+        <button class="fav-remove-btn" onclick="toggleFavourite(${p.id})" aria-label="Remove from favourites">✕</button>
+      </div>`;
+  }).join("");
+
+  // Show "Add All to Cart" only if at least one available item
+  if (actions) {
+    const anyAvailable = favProducts.some(p => p.available) && ordersOpen;
+    actions.style.display = anyAvailable ? "block" : "none";
+  }
+}
+
+function addToCartFromFav(productId) {
+  const p = PRODUCTS.find(x => x.id === productId);
+  if (!p || !p.available) return;
+
+  // Check if there's a length dropdown in the fav panel
+  const sel = document.getElementById(`fav-len-${productId}`);
+  let price, lengthLabel;
+  if (sel) {
+    price       = parseFloat(sel.value);
+    lengthLabel = sel.options[sel.selectedIndex].text;
+  } else {
+    price       = getBasePrice(p);
+    lengthLabel = null;
+  }
+
+  const key      = productId + (lengthLabel || "");
+  const existing = cart.find(i => i.key === key);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ key, id: productId, name: p.name, price, lengthLabel, qty: 1 });
+  }
+
+  updateCartBadge();
+  showCartToast(p.name, lengthLabel);
+}
+
+function addAllFavsToCart() {
+  const favIds     = loadFavourites();
+  const ordersOpen = isOrderingOpen();
+  let   added      = 0;
+
+  favIds.forEach(id => {
+    const p = PRODUCTS.find(x => x.id === id);
+    if (!p || !p.available || !ordersOpen) return;
+
+    const sel         = document.getElementById(`fav-len-${id}`);
+    const price       = sel ? parseFloat(sel.value) : getBasePrice(p);
+    const lengthLabel = sel ? sel.options[sel.selectedIndex].text : null;
+    const key         = id + (lengthLabel || "");
+    const existing    = cart.find(i => i.key === key);
+
+    if (existing) { existing.qty++; }
+    else { cart.push({ key, id, name: p.name, price, lengthLabel, qty: 1 }); }
+    added++;
+  });
+
+  updateCartBadge();
+  if (added > 0) {
+    closeFavPanel();
+    // Small delay so panel closes cleanly before cart opens
+    setTimeout(() => openCart(), 150);
+  }
+}
+
+function updateFavPrice(productId, newPriceNgn) {
+  const price = parseFloat(newPriceNgn);
+  const priceEl = document.getElementById(`fav-price-${productId}`);
+  if (priceEl) {
+    priceEl.innerHTML = `${fmtNGN(price)} <span class="fav-ghs">/ ${fmtGHS(price)}</span>`;
+  }
+}
+
 function showCartToast(name, lengthLabel) {
   const toast = document.getElementById("cart-toast");
   if (!toast) return;
@@ -431,11 +629,18 @@ function renderProducts(list) {
       btnHTML = `<button class="order-btn" onclick="addToCart(${p.id})">Add to Cart 🛒</button>`;
     }
 
+    const favoured = isFavourited(p.id);
+
     return `
     <div class="product-card ${p.available?"":"sold-out"}">
       <div class="card-img-wrap">
         ${buildImageHTML(p)}
         ${badgeHTML}
+        <button class="fav-btn ${favoured ? "fav-active" : ""}"
+          data-id="${p.id}"
+          onclick="toggleFavourite(${p.id})"
+          aria-label="${favoured ? "Remove from favourites" : "Add to favourites"}"
+        >${favoured ? "♥" : "♡"}</button>
       </div>
       <div class="card-body">
         <p class="card-name">${p.name}</p>
@@ -563,4 +768,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("cart-overlay").addEventListener("click", function(e) {
     if (e.target === this) closeCart();
   });
+
+  // Favourites
+  updateFavBadge();
+  document.getElementById("fav-backdrop")?.addEventListener("click", closeFavPanel);
 });
