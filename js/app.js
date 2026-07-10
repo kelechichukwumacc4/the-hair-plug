@@ -13,8 +13,8 @@ function fmtGHS(ngn) {
   const ghs = ngn * RATE_CONFIG.ngn_to_ghs;
   return "GH₵ " + ghs.toLocaleString("en-GH", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
-function depositNGN(ngn) { return fmtNGN(ngn * 0.5); }
-function depositGHS(ngn) { return fmtGHS(ngn * 0.5); }
+// deposit functions removed — full payment required
+
 function getBasePrice(p) {
   return (p.lengths && p.lengths.length > 0) ? p.lengths[0].price_ngn : p.price_ngn;
 }
@@ -329,8 +329,6 @@ function renderCartItems() {
   const total = cartTotal();
   document.getElementById("cart-total-ngn").textContent = fmtNGN(total);
   document.getElementById("cart-total-ghs").textContent = fmtGHS(total);
-  document.getElementById("cart-deposit-ngn").textContent = depositNGN(total);
-  document.getElementById("cart-deposit-ghs").textContent = depositGHS(total);
 }
 
 function submitCartOrder() {
@@ -347,10 +345,9 @@ function submitCartOrder() {
   const isNG      = location === "nigeria";
   const total     = cartTotal();
   const totalStr  = isNG ? fmtNGN(total) : fmtGHS(total);
-  const depStr    = isNG ? depositNGN(total) : depositGHS(total);
   const delivNote = isNG
-    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 3 business days after deposit.\nRemaining 50% must be paid before dispatch."
-    : "Items delivered personally on campus when I arrive in Ghana.\nRemaining 50% paid on collection.";
+    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 3 business days after full payment is received."
+    : "Items delivered personally on campus when I arrive in Ghana.\nProcessing: 3 business days after full payment is received.";
 
   const itemLines = cart.map((item, i) => {
     const itemPrice = isNG ? fmtNGN(item.price) : fmtGHS(item.price);
@@ -361,7 +358,7 @@ function submitCartOrder() {
     `Hi! I'd like to order from The Hair Plug 💛\n\n` +
     `*My Order:*\n${itemLines}\n\n` +
     `*Order Total:* ${totalStr}\n` +
-    `*50% Deposit:* ${depStr}\n` +
+    `*Full Payment Required to Confirm Order*\n` +
     `*Location:* ${isNG ? "Lagos, Nigeria 🇳🇬" : "Ghana (Campus) 🇬🇭"}\n` +
     `*Name:* ${name}\n` +
     `*Number:* ${contact}\n` +
@@ -433,9 +430,9 @@ function renderTicker() {
   const items = [
     `<span class="highlight">1 NGN = ${RATE_CONFIG.ngn_to_ghs} GHS</span>`,
     `Rate updated: <span class="highlight">${RATE_CONFIG.week_label}</span>`,
-    `Processing: <span class="highlight">3 business days</span> after deposit`,
-    `50% deposit confirms your order`,
-    `Remaining 50% paid before dispatch`,
+    `Processing: <span class="highlight">3 business days</span> after full payment`,
+    `Full payment required to confirm your order`,
+    `Payment details sent via WhatsApp on order`,
     `Lagos delivery via <span class="highlight">Bolt Send</span>`,
     `Ghana orders delivered personally on campus`,
   ];
@@ -617,8 +614,7 @@ function renderProducts(list) {
           <span class="price-currency">Ghana</span>
           <span class="price-amount">${fmtGHS(basePrice)}</span>
         </div>
-      </div>
-      <p class="deposit-note" id="deposit-${p.id}">↳ 50% deposit = ${depositNGN(basePrice)} / ${depositGHS(basePrice)}</p>`;
+      </div>`;
 
     let btnHTML;
     if (!p.available) {
@@ -667,8 +663,6 @@ function selectLength(btn, productId) {
       <span class="price-currency">Ghana</span>
       <span class="price-amount">${fmtGHS(price)}</span>
     </div>`;
-  document.getElementById(`deposit-${productId}`).textContent =
-    `↳ 50% deposit = ${depositNGN(price)} / ${depositGHS(price)}`;
 }
 
 // ── Filters ───────────────────────────────────────────────

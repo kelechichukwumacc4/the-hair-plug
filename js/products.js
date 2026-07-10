@@ -464,17 +464,19 @@ const DELIVERY_INFO = {
   ghana: {
     title: "Ghana (Campus Delivery 🇬🇭)",
     details: [
-      "Pay 50% deposit to confirm and hold your order",
-      "Remaining 50% balance must be paid before the wig is packed and brought",
+      "Full payment is required to confirm and source your order",
+      "Payment allows us to source your wig immediately",
       "Items delivered personally when I arrive at school",
+      "Processing takes 3 business days after full payment",
       "Payment via MoMo — details sent on order confirmation"
     ]
   },
   nigeria: {
     title: "Lagos, Nigeria (Bolt Delivery 🇳🇬)",
     details: [
-      "Pay 50% deposit to confirm your order",
-      "Remaining 50% balance must be paid before wig is dispatched via Bolt",
+      "Full payment is required to confirm and source your order",
+      "Payment allows us to source your wig immediately",
+      "Processing takes 3 business days after full payment",
       "Delivery via Bolt Send — Lagos only for now",
       "Delivery fee quoted based on your location",
       "Payment via bank transfer — details sent on order confirmation"
@@ -495,8 +497,8 @@ const FAQS = [
     a: "Yes! If we sent the wrong item, we'll happily arrange an exchange. Reach out via WhatsApp within 24 hours of delivery with photos of what you received."
   },
   {
-    q: "How does the 50% deposit work?",
-    a: "Paying 50% of the wig price confirms and holds your order. The remaining 50% must be paid before your wig is packed and sent out — whether dispatched via Bolt (Lagos) or brought to school (Ghana)."
+    q: "Why is full payment required upfront?",
+    a: "Because we source each wig specifically for your order, full payment is required to confirm and begin the sourcing process. This ensures your wig is secured and processed as quickly as possible. Payment details are sent via WhatsApp once you place your order."
   },
   {
     q: "How long does processing take?",
