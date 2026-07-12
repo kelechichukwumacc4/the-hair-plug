@@ -455,6 +455,19 @@ const PRODUCTS = [
     badge: "",
     available: true
   },
+   {
+    id: 31,
+    name: "Wig Flare",
+    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
+    price_ngn: 55000,
+    images: [
+      "images/wigs/wig-flare-1.jpeg",
+      "images/wigs/wig-flare.jpeg",
+      "images/wigs/wig-flare-2.jpeg",
+    ],
+    badge: "",
+    available: true
+  }
 ];
 
 // ─────────────────────────────────────────────────────────────
