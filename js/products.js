@@ -7,7 +7,7 @@
 //  SECTION 1: EXCHANGE RATE
 // ─────────────────────────────────────────────────────────────
 const RATE_CONFIG = {
-  ngn_to_ghs: 0.01190,
+  ngn_to_ghs: 0.01163,
   week_label: "Week of 1 July 2026",
   last_updated: "2026-07-03"
 };
@@ -439,7 +439,7 @@ const PRODUCTS = [
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
     price_ngn: 75000,
     images: ["images/wigs/dark-wig.jpeg","images/wigs/dark-wig.jpeg"],
     badge: "",
@@ -451,7 +451,7 @@ const PRODUCTS = [
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
     price_ngn: 65000,
     images: ["images/wigs/brown-highlights.jpeg"],
     badge: "",
@@ -463,7 +463,7 @@ const PRODUCTS = [
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
     price_ngn: 65000,
     images: ["images/wigs/classy-wig.jpeg",
        "images/wigs/classy-wig-1.jpeg", 
@@ -477,7 +477,7 @@ const PRODUCTS = [
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
     price_ngn: 65000,
     images: ["images/wigs/classy-wig-hd.jpeg", 
       "images/wigs/classy-wig-hd-2.jpeg"],
@@ -490,7 +490,7 @@ const PRODUCTS = [
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
     price_ngn: 55000,
     images: ["images/wigs/brown-sugar.jpeg", 
       "images/wigs/brown-sugar-1.jpeg", 
@@ -503,7 +503,7 @@ const PRODUCTS = [
     name: "Sinach Wig",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
      lengths: [
       { label: "14 inches", price_ngn: 139000 },
       { label: "16 inches", price_ngn: 150700 },
@@ -520,7 +520,7 @@ const PRODUCTS = [
     name: "Bounce Wig",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
     lengths: [
       { label: "22 inches", price_ngn: 175500 }],
     images: ["images/wigs/bounce-wig.jpeg", 
@@ -533,7 +533,7 @@ const PRODUCTS = [
     name: "Pat Wig",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     category: "curly",
-    date_added: "2026-06-01",
+    date_added: "2026-07-15",
     lengths: [
       { label: "16 inches", price_ngn: 220000 }],
     images: ["images/wigs/pat-wig.jpeg", 
