@@ -1788,8 +1788,9 @@ footer p { opacity: 0.5; }
   transform: translateY(100%);
   transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
   position: relative;
+  visibility: hidden;
 }
-.detail-panel.open .detail-content { transform: translateY(0); }
+.detail-panel.open .detail-content { transform: translateY(0); visibility: visible; }
 
 .detail-close {
   position: absolute;

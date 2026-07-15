@@ -1002,7 +1002,14 @@ function openDetail(productId) {
     orderBtn = `<button class="detail-order-btn" onclick="addToCartFromDetail(${p.id})">Add to Cart 🛒</button>`;
   }
 
-  document.getElementById("detail-content").innerHTML = `
+  // Remove previous inner content but keep the close button
+  const detailContent = document.getElementById("detail-content");
+  const closeBtn = detailContent.querySelector(".detail-close");
+  detailContent.innerHTML = "";
+  if (closeBtn) detailContent.appendChild(closeBtn);
+
+  const innerDiv = document.createElement("div");
+  innerDiv.innerHTML = `
     <div class="detail-inner">
       <div class="detail-img-section">${galleryHTML}</div>
       <div class="detail-info-section">
@@ -1034,6 +1041,7 @@ function openDetail(productId) {
         </div>
       </div>
     </div>`;
+  detailContent.appendChild(innerDiv);
 
   document.getElementById("detail-panel").classList.add("open");
   document.getElementById("detail-backdrop").classList.add("open");

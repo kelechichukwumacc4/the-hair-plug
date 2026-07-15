@@ -458,7 +458,7 @@ const PRODUCTS = [
     available: true
   },
   {
-    id: 33,
+    id: 34,
     name: "Classy Wig with Brown Highlights",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
@@ -472,7 +472,7 @@ const PRODUCTS = [
     available: true
   },
     {
-    id: 33,
+    id: 35,
     name: "Classy Wig with Illusion HD",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
@@ -485,7 +485,7 @@ const PRODUCTS = [
     available: true
   },
    {
-    id: 34,
+    id: 36,
     name: "Brown Sugar",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     quality: "Blend",
@@ -499,7 +499,7 @@ const PRODUCTS = [
     available: true
   },
   {
-    id: 35,
+    id: 37,
     name: "Sinach Wig",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     category: "curly",
@@ -516,7 +516,7 @@ const PRODUCTS = [
     available: true
   },
    {
-    id: 36,
+    id: 38,
     name: "Bounce Wig",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     category: "curly",
@@ -529,7 +529,7 @@ const PRODUCTS = [
     available: true
   },
   {
-    id: 37,
+    id: 39,
     name: "Pat Wig",
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     category: "curly",
