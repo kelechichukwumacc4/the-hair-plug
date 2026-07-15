@@ -441,7 +441,7 @@ const PRODUCTS = [
     category: "curly",
     date_added: "2026-07-15",
     price_ngn: 75000,
-    images: ["images/wigs/dark-wig.jpeg","images/wigs/dark-wig.jpeg"],
+    images: ["images/wigs/dark-wig.jpeg","images/wigs/dark-wig-1.jpeg"],
     badge: "",
     available: true
   },
