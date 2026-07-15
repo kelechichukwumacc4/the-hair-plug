@@ -65,6 +65,10 @@ function addToCart(productId) {
 function removeFromCart(key) {
   cart = cart.filter(i => i.key !== key);
   updateCartBadge();
+  if (cart.length === 0) {
+    closeCart();
+    return;
+  }
   renderCartItems();
 }
 
@@ -305,6 +309,25 @@ function openCart() {
 function closeCart() {
   document.getElementById("cart-overlay").classList.remove("open");
   document.body.style.overflow = "";
+
+  // Reset all delivery fields so they're clean next time cart opens
+  const ids = [
+    "cart-country", "cart-lagos-zone", "cart-lagos-location",
+    "cart-state", "cart-ghana-type", "cart-ghana-city",
+    "cart-address", "cart-name", "cart-contact", "cart-notes"
+  ];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+
+  // Hide all conditional sections
+  ["lagos-area-wrap","lagos-location-wrap","outside-lagos-wrap",
+   "ghana-wrap","ghana-off-campus-wrap","address-wrap",
+   "delivery-fee-row","grand-total-row"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
 }
 
 function renderCartItems() {
@@ -331,45 +354,180 @@ function renderCartItems() {
   document.getElementById("cart-total-ghs").textContent = fmtGHS(total);
 }
 
-function submitCartOrder() {
-  const name     = document.getElementById("cart-name").value.trim();
-  const location = document.getElementById("cart-location").value;
-  const contact  = document.getElementById("cart-contact").value.trim();
-  const notes    = document.getElementById("cart-notes").value.trim();
+// ── Delivery UI Logic ─────────────────────────────────────
 
-  if (!name || !location || !contact) {
-    alert("Please fill in your name, location, and contact number.");
-    return;
+function handleCountryChange() {
+  const country = document.getElementById("cart-country").value;
+
+  // Hide all conditional sections first
+  document.getElementById("lagos-area-wrap").style.display        = "none";
+  document.getElementById("lagos-location-wrap").style.display    = "none";
+  document.getElementById("outside-lagos-wrap").style.display     = "none";
+  document.getElementById("ghana-wrap").style.display             = "none";
+  document.getElementById("address-wrap").style.display           = "none";
+  document.getElementById("ghana-off-campus-wrap").style.display  = "none";
+  document.getElementById("delivery-fee-row").style.display       = "none";
+  document.getElementById("grand-total-row").style.display        = "none";
+
+  // Reset zone/location selects
+  document.getElementById("cart-lagos-zone").value     = "";
+  document.getElementById("cart-lagos-location").value = "";
+
+  if (country === "lagos") {
+    document.getElementById("lagos-area-wrap").style.display = "block";
+    document.getElementById("address-wrap").style.display    = "block";
+  } else if (country === "outside-lagos") {
+    document.getElementById("outside-lagos-wrap").style.display = "block";
+    document.getElementById("address-wrap").style.display       = "block";
+    updateGrandTotal(0); // no calculated fee for outside lagos
+  } else if (country === "ghana") {
+    document.getElementById("ghana-wrap").style.display = "block";
+  }
+}
+
+function handleZoneChange() {
+  const zone = document.getElementById("cart-lagos-zone").value;
+  const locationSelect = document.getElementById("cart-lagos-location");
+  const locationWrap   = document.getElementById("lagos-location-wrap");
+
+  locationSelect.innerHTML = `<option value="">— Pick your area —</option>`;
+  document.getElementById("delivery-fee-row").style.display = "none";
+  document.getElementById("grand-total-row").style.display  = "none";
+
+  if (!zone) { locationWrap.style.display = "none"; return; }
+
+  const locations = LAGOS_LOCATIONS[zone];
+  locations.forEach(loc => {
+    const opt = document.createElement("option");
+    opt.value       = loc.price;
+    opt.dataset.name = loc.name;
+    opt.textContent = `${loc.name} (₦${loc.price.toLocaleString()})`;
+    locationSelect.appendChild(opt);
+  });
+
+  locationWrap.style.display = "block";
+}
+
+function handleLagosLocationChange() {
+  const sel  = document.getElementById("cart-lagos-location");
+  const price = parseFloat(sel.value);
+  if (!price) return;
+  updateGrandTotal(price);
+}
+
+function handleGhanaTypeChange() {
+  const type = document.getElementById("cart-ghana-type").value;
+  document.getElementById("ghana-off-campus-wrap").style.display =
+    type === "off-campus" ? "block" : "none";
+
+  if (type === "vvu-campus") {
+    document.getElementById("delivery-fee-row").style.display = "flex";
+    document.getElementById("delivery-fee-display").textContent = "FREE 🎉";
+    document.getElementById("grand-total-row").style.display   = "none";
+  } else {
+    document.getElementById("delivery-fee-row").style.display = "none";
+    document.getElementById("grand-total-row").style.display  = "none";
+  }
+}
+
+function updateGrandTotal(deliveryFee) {
+  const itemsTotal = cartTotal();
+  const grandTotal = itemsTotal + deliveryFee;
+
+  document.getElementById("delivery-fee-row").style.display  = "flex";
+  document.getElementById("grand-total-row").style.display   = "flex";
+  document.getElementById("delivery-fee-display").textContent = deliveryFee > 0
+    ? fmtNGN(deliveryFee)
+    : "To be confirmed via WhatsApp";
+  document.getElementById("grand-total-display").textContent = deliveryFee > 0
+    ? fmtNGN(grandTotal)
+    : fmtNGN(itemsTotal) + " + shipping";
+}
+
+function submitCartOrder() {
+  const name    = document.getElementById("cart-name").value.trim();
+  const contact = document.getElementById("cart-contact").value.trim();
+  const country = document.getElementById("cart-country").value;
+  const notes   = document.getElementById("cart-notes").value.trim();
+
+  // Basic required field check
+  if (!name) { alert("Please enter your full name."); return; }
+  if (!contact) { alert("Please enter your WhatsApp / phone number."); return; }
+  if (!country) { alert("Please select your location."); return; }
+
+  let locationLine  = "";
+  let deliveryFee   = 0;
+  let deliveryLine  = "";
+  let deliveryNote  = "";
+  const isGhana     = country === "ghana";
+  const isLagos     = country === "lagos";
+
+  if (isLagos) {
+    const zone     = document.getElementById("cart-lagos-zone").value;
+    const locSel   = document.getElementById("cart-lagos-location");
+    const locPrice = parseFloat(locSel.value);
+    const locName  = locSel.options[locSel.selectedIndex]?.dataset?.name || "";
+    const address  = document.getElementById("cart-address").value.trim();
+    if (!zone || !locName || !locPrice) { alert("Please select your Lagos area and location."); return; }
+    if (!address) { alert("Please enter your full delivery address."); return; }
+    deliveryFee  = locPrice;
+    locationLine = `Lagos, Nigeria 🇳🇬 — ${zone.charAt(0).toUpperCase() + zone.slice(1)} · ${locName}`;
+    deliveryLine = `*Delivery Fee:* ${fmtNGN(deliveryFee)}\n*Delivery Address:* ${address}`;
+    deliveryNote = "Lagos delivery: 24–48 hours after dispatch.";
+
+  } else if (country === "outside-lagos") {
+    const state   = document.getElementById("cart-state").value.trim();
+    const address = document.getElementById("cart-address").value.trim();
+    if (!state)   { alert("Please enter your state."); return; }
+    if (!address) { alert("Please enter your full delivery address."); return; }
+    locationLine = `Outside Lagos 🇳🇬 — ${state}`;
+    deliveryLine = `*Delivery Address:* ${address}\n*Shipping Fee:* To be confirmed via WhatsApp`;
+    deliveryNote = "Shipping fee will be confirmed via WhatsApp before dispatch.";
+
+  } else if (isGhana) {
+    const ghType = document.getElementById("cart-ghana-type").value;
+    if (!ghType) { alert("Please select your Ghana delivery type."); return; }
+    if (ghType === "off-campus") {
+      const city = document.getElementById("cart-ghana-city").value.trim();
+      if (!city) { alert("Please enter your city or province."); return; }
+      locationLine = `Ghana 🇬🇭 — Off-Campus · ${city}`;
+      deliveryLine = `*Delivery Type:* Off-Campus via Yango · ${city}\n*Delivery Fee:* To be confirmed via WhatsApp`;
+    } else {
+      locationLine = `Ghana 🇬🇭 — VVU On-Campus (FREE)`;
+      deliveryLine = `*Delivery Type:* VVU On-Campus — FREE 🎉`;
+    }
+    deliveryNote = "Ghana orders delivered 24–96 hours after I arrive back at school. See countdown on site.";
   }
 
-  const isNG      = location === "nigeria";
-  const total     = cartTotal();
-  const totalStr  = isNG ? fmtNGN(total) : fmtGHS(total);
-  const delivNote = isNG
-    ? "Delivery via Bolt Send within Lagos. Delivery fee quoted after order.\nProcessing: 3 business days after full payment is received."
-    : "Items delivered personally on campus when I arrive in Ghana.\nProcessing: 3 business days after full payment is received.";
+  const itemsTotal = cartTotal();
+  const grandTotal = itemsTotal + deliveryFee;
 
   const itemLines = cart.map((item, i) => {
-    const itemPrice = isNG ? fmtNGN(item.price) : fmtGHS(item.price);
-    return `${i + 1}. ${item.name}${item.lengthLabel ? " (" + item.lengthLabel + ")" : ""} × ${item.qty} — ${itemPrice} each`;
+    const priceStr = isGhana ? fmtGHS(item.price) : fmtNGN(item.price);
+    return `${i + 1}. ${item.name}${item.lengthLabel ? " (" + item.lengthLabel + ")" : ""} × ${item.qty} — ${priceStr} each`;
   }).join("\n");
+
+  const grandTotalLine = deliveryFee > 0
+    ? `*Items Total:* ${fmtNGN(itemsTotal)}\n*Delivery Fee:* ${fmtNGN(deliveryFee)}\n*Grand Total:* ${fmtNGN(grandTotal)}`
+    : isGhana
+      ? `*Order Total:* ${fmtNGN(itemsTotal)} / ${fmtGHS(itemsTotal)}`
+      : `*Items Total:* ${fmtNGN(itemsTotal)}\n*Delivery:* To be confirmed`;
 
   const msg = encodeURIComponent(
     `Hi! I'd like to order from The Hair Plug 💛\n\n` +
     `*My Order:*\n${itemLines}\n\n` +
-    `*Order Total:* ${totalStr}\n` +
-    `*Full Payment Required to Confirm Order*\n` +
-    `*Location:* ${isNG ? "Lagos, Nigeria 🇳🇬" : "Ghana (Campus) 🇬🇭"}\n` +
+    `${grandTotalLine}\n\n` +
+    `*Full Payment Required to Confirm Order*\n\n` +
     `*Name:* ${name}\n` +
     `*Number:* ${contact}\n` +
+    `*Location:* ${locationLine}\n` +
+    `${deliveryLine}\n` +
     (notes ? `*Notes:* ${notes}\n` : "") +
-    `\n${delivNote}\n` +
-    ``
+    `\n📦 ${deliveryNote}`
   );
 
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
 
-  // Try to open automatically
   const link = document.createElement("a");
   link.href = waLink;
   link.target = "_blank";
@@ -378,8 +536,6 @@ function submitCartOrder() {
   link.click();
   document.body.removeChild(link);
 
-  // Always show a manual fallback overlay too, in case auto-open
-  // is blocked (in-app browsers, some Android settings, etc.)
   showWhatsAppFallback(waLink);
 
   cart = [];
@@ -430,10 +586,10 @@ function renderTicker() {
   const items = [
     `<span class="highlight">1 NGN = ${RATE_CONFIG.ngn_to_ghs} GHS</span>`,
     `Rate updated: <span class="highlight">${RATE_CONFIG.week_label}</span>`,
-    `Processing: <span class="highlight">3 business days</span> after full payment`,
+    `Processing: <span class="highlight">5 business days</span> after full payment`,
     `Full payment required to confirm your order`,
     `Payment details sent via WhatsApp on order`,
-    `Lagos delivery via <span class="highlight">Bolt Send</span>`,
+
     `Ghana orders delivered personally on campus`,
   ];
   const html = items.map(text =>
@@ -587,9 +743,15 @@ function renderProducts(list) {
     const hasLengths = p.lengths && p.lengths.length > 0;
     const basePrice  = getBasePrice(p);
 
-    const badgeHTML = p.available
-      ? (p.badge ? `<span class="badge">${p.badge}</span>` : "")
-      : `<span class="badge sold-out-badge">Sold Out</span>`;
+    // Badge: New Arrival takes priority, then custom badge, then sold out
+    let badgeHTML = "";
+    if (!p.available) {
+      badgeHTML = `<span class="badge sold-out-badge">Sold Out</span>`;
+    } else if (isNewArrival(p)) {
+      badgeHTML = `<span class="badge new-arrival-badge">✨ New Arrival</span>`;
+    } else if (p.badge) {
+      badgeHTML = `<span class="badge">${p.badge}</span>`;
+    }
 
     const lengthHTML = hasLengths ? `
       <div class="length-selector">
@@ -629,12 +791,12 @@ function renderProducts(list) {
 
     return `
     <div class="product-card ${p.available?"":"sold-out"}">
-      <div class="card-img-wrap">
+      <div class="card-img-wrap" onclick="openDetail(${p.id})" style="cursor:pointer">
         ${buildImageHTML(p)}
         ${badgeHTML}
         <button class="fav-btn ${favoured ? "fav-active" : ""}"
           data-id="${p.id}"
-          onclick="toggleFavourite(${p.id})"
+          onclick="event.stopPropagation();toggleFavourite(${p.id})"
           aria-label="${favoured ? "Remove from favourites" : "Add to favourites"}"
         >${favoured ? "♥" : "♡"}</button>
       </div>
@@ -665,6 +827,24 @@ function selectLength(btn, productId) {
     </div>`;
 }
 
+// ── New Arrival helper ────────────────────────────────────
+function isNewArrival(p) {
+  if (!p.date_added) return false;
+  const added = new Date(p.date_added);
+  const now   = new Date();
+  const diffDays = (now - added) / (1000 * 60 * 60 * 24);
+  return diffDays <= 14;
+}
+
+// ── Sort: new arrivals first, then rest ───────────────────
+function sortWithNewFirst(list) {
+  return [...list].sort((a, b) => {
+    const aNew = isNewArrival(a) ? 1 : 0;
+    const bNew = isNewArrival(b) ? 1 : 0;
+    return bNew - aNew;
+  });
+}
+
 // ── Filters ───────────────────────────────────────────────
 function setupFilters() {
   document.querySelectorAll(".filter-btn").forEach(btn => {
@@ -673,26 +853,45 @@ function setupFilters() {
       btn.classList.add("active");
       const f = btn.dataset.filter;
       let list = PRODUCTS;
+      if (f === "curly")     list = PRODUCTS.filter(p => p.category === "curly");
+      if (f === "straight")  list = PRODUCTS.filter(p => p.category === "straight");
+      if (f === "new")       list = PRODUCTS.filter(p => isNewArrival(p));
       if (f === "available") list = PRODUCTS.filter(p => p.available);
       if (f === "sold-out")  list = PRODUCTS.filter(p => !p.available);
-      renderProducts(list);
+      renderProducts(sortWithNewFirst(list));
     });
   });
 }
 
 // ── How to Order ──────────────────────────────────────────
 function renderHowToOrder() {
-  const ghCard = document.getElementById("how-ghana");
-  const ngCard = document.getElementById("how-nigeria");
+  const ghCard  = document.getElementById("how-ghana");
+  const ngCard  = document.getElementById("how-nigeria");
+  const outCard = document.getElementById("how-outside-lagos");
   if (!ghCard || !ngCard) return;
-  ghCard.innerHTML = `
-    <div class="how-card-flag">🇬🇭</div>
-    <h3>${DELIVERY_INFO.ghana.title}</h3>
-    <ul>${DELIVERY_INFO.ghana.details.map(d=>`<li>${d}</li>`).join("")}</ul>`;
+
   ngCard.innerHTML = `
     <div class="how-card-flag">🇳🇬</div>
     <h3>${DELIVERY_INFO.nigeria.title}</h3>
     <ul>${DELIVERY_INFO.nigeria.details.map(d=>`<li>${d}</li>`).join("")}</ul>`;
+
+  if (outCard) {
+    outCard.innerHTML = `
+      <div class="how-card-flag">📦</div>
+      <h3>Outside Lagos (Nigeria)</h3>
+      <ul>
+        <li>Select "Outside Lagos" at checkout and enter your state</li>
+        <li>Shipping fee will be confirmed via WhatsApp before dispatch</li>
+        <li>Full payment required upfront to source your wig</li>
+        <li>Payment via bank transfer — details sent via WhatsApp</li>
+        <li>Delivery timeline confirmed based on your location</li>
+      </ul>`;
+  }
+
+  ghCard.innerHTML = `
+    <div class="how-card-flag">🇬🇭</div>
+    <h3>${DELIVERY_INFO.ghana.title}</h3>
+    <ul>${DELIVERY_INFO.ghana.details.map(d=>`<li>${d}</li>`).join("")}</ul>`;
 }
 
 // ── FAQ ───────────────────────────────────────────────────
@@ -747,11 +946,140 @@ function setupPhoneInputs() {
   });
 }
 
+// ══════════════════════════════════════════════════════════
+//  PRODUCT DETAIL PANEL
+// ══════════════════════════════════════════════════════════
+function openDetail(productId) {
+  const p = PRODUCTS.find(x => x.id === productId);
+  if (!p) return;
+
+  const ordersOpen  = isOrderingOpen();
+  const hasLengths  = p.lengths && p.lengths.length > 0;
+  const basePrice   = getBasePrice(p);
+  const images      = Array.isArray(p.images) ? p.images : (p.image ? [p.image] : []);
+  const favoured    = isFavourited(p.id);
+
+  // Build image gallery for detail panel
+  let galleryHTML = "";
+  if (images.length === 0) {
+    galleryHTML = `<div class="detail-no-img">📷 Photo coming soon</div>`;
+  } else if (images.length === 1) {
+    galleryHTML = `<img src="${images[0]}" class="detail-main-img" alt="${p.name}">`;
+  } else {
+    galleryHTML = `
+      <div class="detail-gallery">
+        <img src="${images[0]}" class="detail-main-img" id="detail-main-img-${p.id}" alt="${p.name}">
+        <div class="detail-thumbs">
+          ${images.map((src, i) => `
+            <img src="${src}" class="detail-thumb ${i===0?"active":""}"
+              onclick="switchDetailImg('${src}', this, ${p.id})"
+              alt="${p.name} photo ${i+1}">`
+          ).join("")}
+        </div>
+      </div>`;
+  }
+
+  // Length selector for detail panel
+  const lengthHTML = hasLengths ? `
+    <div class="detail-lengths">
+      <p class="detail-length-label">Select Length</p>
+      <div class="detail-length-pills">
+        ${p.lengths.map((l, i) => `
+          <button class="detail-len-pill ${i===0?"active":""}"
+            data-price="${l.price_ngn}"
+            onclick="selectDetailLength(this, ${p.id})"
+          >${l.label}</button>`).join("")}
+      </div>
+    </div>` : "";
+
+  // Order button
+  let orderBtn = "";
+  if (!p.available) {
+    orderBtn = `<button class="detail-order-btn" disabled>Sold Out</button>`;
+  } else if (!ordersOpen) {
+    orderBtn = `<button class="detail-order-btn" disabled>Currently Away — Orders Closed</button>`;
+  } else {
+    orderBtn = `<button class="detail-order-btn" onclick="addToCartFromDetail(${p.id})">Add to Cart 🛒</button>`;
+  }
+
+  document.getElementById("detail-content").innerHTML = `
+    <div class="detail-inner">
+      <div class="detail-img-section">${galleryHTML}</div>
+      <div class="detail-info-section">
+        <div class="detail-badges">
+          ${isNewArrival(p) ? `<span class="badge new-arrival-badge">✨ New Arrival</span>` : ""}
+          ${!p.available ? `<span class="badge sold-out-badge">Sold Out</span>` : ""}
+        </div>
+        <h2 class="detail-name">${p.name}</h2>
+        ${p.quality ? `<p class="detail-quality">Type: <strong>${p.quality}</strong></p>` : ""}
+        ${p.category ? `<p class="detail-quality">Category: <strong>${p.category.charAt(0).toUpperCase() + p.category.slice(1)}</strong></p>` : ""}
+        <p class="detail-desc">${p.description}</p>
+        ${lengthHTML}
+        <div class="detail-prices" id="detail-prices-${p.id}">
+          <div class="detail-price-row">
+            <span class="detail-currency">Nigeria 🇳🇬</span>
+            <span class="detail-amount" id="detail-ngn-${p.id}">${fmtNGN(basePrice)}</span>
+          </div>
+          <div class="detail-price-row">
+            <span class="detail-currency">Ghana 🇬🇭</span>
+            <span class="detail-amount" id="detail-ghs-${p.id}">${fmtGHS(basePrice)}</span>
+          </div>
+        </div>
+        <p class="detail-processing">🕐 Processing: 5 business days after full payment</p>
+        <div class="detail-actions">
+          <button class="detail-fav-btn ${favoured?"fav-active":""}"
+            onclick="toggleFavourite(${p.id});this.classList.toggle('fav-active');this.innerHTML=isFavourited(${p.id})?'♥ Saved':'♡ Save'"
+          >${favoured ? "♥ Saved" : "♡ Save"}</button>
+          ${orderBtn}
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById("detail-panel").classList.add("open");
+  document.getElementById("detail-backdrop").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDetail() {
+  document.getElementById("detail-panel").classList.remove("open");
+  document.getElementById("detail-backdrop").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function switchDetailImg(src, thumb, productId) {
+  document.getElementById(`detail-main-img-${productId}`).src = src;
+  thumb.closest(".detail-thumbs").querySelectorAll(".detail-thumb").forEach(t => t.classList.remove("active"));
+  thumb.classList.add("active");
+}
+
+function selectDetailLength(btn, productId) {
+  btn.closest(".detail-length-pills").querySelectorAll(".detail-len-pill").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  const price = parseFloat(btn.dataset.price);
+  document.getElementById(`detail-ngn-${productId}`).textContent = fmtNGN(price);
+  document.getElementById(`detail-ghs-${productId}`).textContent = fmtGHS(price);
+}
+
+function addToCartFromDetail(productId) {
+  const p = PRODUCTS.find(x => x.id === productId);
+  if (!p || !p.available) return;
+  const activeLen = document.querySelector(`#detail-panel .detail-len-pill.active`);
+  const price       = activeLen ? parseFloat(activeLen.dataset.price) : getBasePrice(p);
+  const lengthLabel = activeLen ? activeLen.textContent.trim() : null;
+  const key         = productId + (lengthLabel || "");
+  const existing    = cart.find(i => i.key === key);
+  if (existing) { existing.qty++; }
+  else { cart.push({ key, id: productId, name: p.name, price, lengthLabel, qty: 1 }); }
+  updateCartBadge();
+  showCartToast(p.name, lengthLabel);
+  closeDetail();
+}
+
 // ── Init ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   renderTicker();
   renderScheduleBanner();
-  renderProducts(PRODUCTS);
+  renderProducts(sortWithNewFirst(PRODUCTS));
   setupFilters();
   renderHowToOrder();
   renderFAQ();
@@ -766,4 +1094,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Favourites
   updateFavBadge();
   document.getElementById("fav-backdrop")?.addEventListener("click", closeFavPanel);
+
+  // Detail panel backdrop
+  document.getElementById("detail-backdrop")?.addEventListener("click", closeDetail);
 });
