@@ -669,6 +669,13 @@ function startCountdown(containerId, targetDate) {
 
 // ── Image Gallery ─────────────────────────────────────────
 // Called when gallery arrow is clicked
+function loadLazyImg(img) {
+  if (img.dataset.src) {
+    img.src = img.dataset.src;
+    img.removeAttribute('data-src');
+  }
+}
+
 function galleryNav(btn, dir) {
   const wrap   = btn.closest(".card-img-wrap");
   const imgs   = wrap.querySelectorAll(".gallery-img");
@@ -676,8 +683,11 @@ function galleryNav(btn, dir) {
   const active = wrap.querySelector(".gallery-img.active");
   let idx      = [...imgs].indexOf(active);
   idx          = (idx + dir + imgs.length) % imgs.length;
-  imgs.forEach((img, i) => img.classList.toggle("active", i === idx));
-  dots.forEach((d,   i) => d.classList.toggle("active",   i === idx));
+  imgs.forEach((img, i) => {
+    img.classList.toggle("active", i === idx);
+    if (i === idx) loadLazyImg(img);
+  });
+  dots.forEach((d, i) => d.classList.toggle("active", i === idx));
 }
 
 function galleryDot(dot) {
@@ -685,12 +695,14 @@ function galleryDot(dot) {
   const imgs = wrap.querySelectorAll(".gallery-img");
   const dots = wrap.querySelectorAll(".gallery-dot");
   const idx  = [...dots].indexOf(dot);
-  imgs.forEach((img, i) => img.classList.toggle("active", i === idx));
-  dots.forEach((d,   i) => d.classList.toggle("active",   i === idx));
+  imgs.forEach((img, i) => {
+    img.classList.toggle("active", i === idx);
+    if (i === idx) loadLazyImg(img);
+  });
+  dots.forEach((d, i) => d.classList.toggle("active", i === idx));
 }
 
 function buildImageHTML(p) {
-  // Support both single image (string) and multiple images (array)
   const images = Array.isArray(p.images) ? p.images
                : p.image                 ? [p.image]
                : [];
@@ -707,14 +719,18 @@ function buildImageHTML(p) {
   }
 
   if (images.length === 1) {
+    // First visible card loads eagerly, rest lazy
     return `<img class="gallery-img active" src="${images[0]}" alt="${p.name}" loading="lazy"
               onerror="this.style.display='none'">`;
   }
 
-  // Multiple images — build slideshow
+  // Multiple images — first image loads immediately, rest use data-src
   const imgTags = images.map((src, i) =>
-    `<img class="gallery-img ${i===0?"active":""}" src="${src}" alt="${p.name} photo ${i+1}" loading="lazy"
-       onerror="this.style.display='none'">`
+    i === 0
+      ? `<img class="gallery-img active" src="${src}" alt="${p.name} photo 1" loading="lazy"
+           onerror="this.style.display='none'">`
+      : `<img class="gallery-img" data-src="${src}" alt="${p.name} photo ${i+1}"
+           onerror="this.style.display='none'">`
   ).join("");
 
   const dotTags = images.map((_, i) =>
@@ -1083,6 +1099,26 @@ function addToCartFromDetail(productId) {
   closeDetail();
 }
 
+// ── Lazy load images with fade-in ────────────────────────
+function setupLazyImages() {
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+      if (img.dataset.src) {
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+        img.onload = () => img.classList.add('loaded');
+        img.onerror = () => img.style.display = 'none';
+      }
+      observer.unobserve(img);
+    });
+  }, { rootMargin: '200px' }); // load 200px before entering viewport
+
+  document.querySelectorAll('img[data-src]').forEach(img => observer.observe(img));
+}
+
 // ── Init ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   renderTicker();
@@ -1093,6 +1129,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFAQ();
   setupPhoneInputs();
   updateCartBadge();
+  setupLazyImages();
 
   // Close cart overlay on backdrop click
   document.getElementById("cart-overlay").addEventListener("click", function(e) {
