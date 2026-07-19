@@ -185,7 +185,7 @@ const PRODUCTS = [
     category: "curly",
     date_added: "2026-07-19",
     price_ngn: "75000",
-    image: ["images/wigs/full-frontal.jpg", "images/wigs/full-frontal-1.jpg"],
+    images: ["images/wigs/full-frontal.jpg", "images/wigs/full-frontal-1.jpg"],
     badge: "",
     available: true
   },
