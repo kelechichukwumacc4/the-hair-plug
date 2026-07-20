@@ -137,7 +137,7 @@ const PRODUCTS = [
     category: "curly",
     date_added: "2026-06-01",
     price_ngn: 60000,
-    images: ["images/wigs/brown-blonde-girl-1.jpeg","images/wigs/brown-blonde-girl.jpeg","images/wigs/brown-blonde-girl-2.jpeg"],
+    images: ["images/wigs/brown-blonde-girl-1.jpeg","images/wigs/brown-blonde-girl-2.jpeg"],
     badge: "",
     available: true
   },

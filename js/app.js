@@ -676,6 +676,12 @@ function loadLazyImg(img) {
   }
 }
 
+// Called when gallery arrow is clicked
+function onGalleryArrow(e, dir) {
+  e.stopPropagation();
+  galleryNav(e.currentTarget, dir);
+}
+
 function galleryNav(btn, dir) {
   const wrap   = btn.closest(".card-img-wrap");
   const imgs   = wrap.querySelectorAll(".gallery-img");
@@ -739,8 +745,8 @@ function buildImageHTML(p) {
 
   return `
     ${imgTags}
-    <button class="gallery-arrow gallery-prev" onclick="galleryNav(this,-1)" aria-label="Previous photo">&#8249;</button>
-    <button class="gallery-arrow gallery-next" onclick="galleryNav(this, 1)" aria-label="Next photo">&#8250;</button>
+    <button class="gallery-arrow gallery-prev" onclick="onGalleryArrow(event,-1)" aria-label="Previous photo">&#8249;</button>
+    <button class="gallery-arrow gallery-next" onclick="onGalleryArrow(event,1)" aria-label="Next photo">&#8250;</button>
     <div class="gallery-dots">${dotTags}</div>`;
 }
 

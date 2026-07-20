@@ -1835,6 +1835,7 @@ footer p { opacity: 0.5; }
   aspect-ratio: 3/4;
   object-fit: cover;
   display: block;
+  max-height: 55vh;
 }
 .detail-gallery { display: flex; flex-direction: column; }
 .detail-thumbs {
@@ -2221,12 +2222,12 @@ footer p { opacity: 0.5; }
   .fav-thumb-wrap      { width: 64px; height: 76px; }
 
   /* ── Detail panel ───────────────────────────────────────── */
-  .detail-content { max-height: 94vh; border-radius: 20px 20px 0 0; }
+  .detail-content { max-height: 90vh; border-radius: 20px 20px 0 0; overflow-y: auto; }
   .detail-inner   { grid-template-columns: 1fr; }
 
   /* Stack: image first, then info */
   .detail-img-section { border-radius: 20px 20px 0 0; }
-  .detail-main-img    { aspect-ratio: 4/3; } /* wider on mobile — fits better */
+  .detail-main-img    { aspect-ratio: 4/3; max-height: 45vh; object-position: top; }
   .detail-thumb       { width: 44px; height: 52px; }
 
   .detail-info-section { padding: 16px 16px 24px; gap: 10px; }
