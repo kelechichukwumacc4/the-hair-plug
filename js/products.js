@@ -7,7 +7,7 @@
 //  SECTION 1: EXCHANGE RATE
 // ─────────────────────────────────────────────────────────────
 const RATE_CONFIG = {
-  ngn_to_ghs: 0.01163,
+  ngn_to_ghs: 0.01176,
   week_label: "Week of 1 July 2026",
   last_updated: "2026-07-03"
 };
