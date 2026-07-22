@@ -677,9 +677,10 @@ function loadLazyImg(img) {
 }
 
 // Called when gallery arrow is clicked
-function onGalleryArrow(e, dir) {
+function onGalleryArrow(e, btn, dir) {
   e.stopPropagation();
-  galleryNav(e.currentTarget, dir);
+  e.preventDefault();
+  galleryNav(btn, dir);
 }
 
 function galleryNav(btn, dir) {
@@ -689,11 +690,8 @@ function galleryNav(btn, dir) {
   const active = wrap.querySelector(".gallery-img.active");
   let idx      = [...imgs].indexOf(active);
   idx          = (idx + dir + imgs.length) % imgs.length;
-  imgs.forEach((img, i) => {
-    img.classList.toggle("active", i === idx);
-    if (i === idx) loadLazyImg(img);
-  });
-  dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+  imgs.forEach((img, i) => img.classList.toggle("active", i === idx));
+  dots.forEach((d,   i) => d.classList.toggle("active",   i === idx));
 }
 
 function galleryDot(dot) {
@@ -701,11 +699,8 @@ function galleryDot(dot) {
   const imgs = wrap.querySelectorAll(".gallery-img");
   const dots = wrap.querySelectorAll(".gallery-dot");
   const idx  = [...dots].indexOf(dot);
-  imgs.forEach((img, i) => {
-    img.classList.toggle("active", i === idx);
-    if (i === idx) loadLazyImg(img);
-  });
-  dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+  imgs.forEach((img, i) => img.classList.toggle("active", i === idx));
+  dots.forEach((d,   i) => d.classList.toggle("active",   i === idx));
 }
 
 function buildImageHTML(p) {
@@ -730,13 +725,10 @@ function buildImageHTML(p) {
               onerror="this.style.display='none'">`;
   }
 
-  // Multiple images — first image loads immediately, rest use data-src
+  // Multiple images — all load eagerly so arrows work instantly
   const imgTags = images.map((src, i) =>
-    i === 0
-      ? `<img class="gallery-img active" src="${src}" alt="${p.name} photo 1" loading="lazy"
-           onerror="this.style.display='none'">`
-      : `<img class="gallery-img" data-src="${src}" alt="${p.name} photo ${i+1}"
-           onerror="this.style.display='none'">`
+    `<img class="gallery-img ${i===0?"active":""}" src="${src}" alt="${p.name} photo ${i+1}"
+         onerror="this.style.display='none'">`
   ).join("");
 
   const dotTags = images.map((_, i) =>
@@ -745,8 +737,8 @@ function buildImageHTML(p) {
 
   return `
     ${imgTags}
-    <button class="gallery-arrow gallery-prev" onclick="onGalleryArrow(event,-1)" aria-label="Previous photo">&#8249;</button>
-    <button class="gallery-arrow gallery-next" onclick="onGalleryArrow(event,1)" aria-label="Next photo">&#8250;</button>
+    <button class="gallery-arrow gallery-prev" onclick="onGalleryArrow(event,this,-1)" aria-label="Previous photo">&#8249;</button>
+    <button class="gallery-arrow gallery-next" onclick="onGalleryArrow(event,this,1)" aria-label="Next photo">&#8250;</button>
     <div class="gallery-dots">${dotTags}</div>`;
 }
 

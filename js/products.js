@@ -8,8 +8,8 @@
 // ─────────────────────────────────────────────────────────────
 const RATE_CONFIG = {
   ngn_to_ghs: 0.01176,
-  week_label: "Week of 1 July 2026",
-  last_updated: "2026-07-03"
+  week_label: "Week of 20 July 2026",
+  last_updated: "2026-07-20"
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -209,7 +209,7 @@ const PRODUCTS = [
     category: "curly",
     date_added: "2026-07-19",
     price_ngn: "155000",
-    images: ["images/wigs/bouncy-curls-1.jpg","images/wigs/bouncy-curls.jpg"],
+    images: ["images/wigs/bouncy-curls.jpeg","images/wigs/bouncy-curls-2.jpeg", "images/wigs/bouncy-curls-1.jpeg"],
     badge: "",
     available: true
   },
