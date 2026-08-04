@@ -40,23 +40,12 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 60000,
+    price_ngn: 65000,
     images: ["images/wigs/quality-wig-ginger.jpg","images/wigs/quality-wig-ginger-2.jpg"],
     badge: "",
     available: true
   },
-  {
-    id: 2,
-    name: "Quality Student Bob",
-    description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
-    quality: "Blend",
-    category: "straight",
-    date_added: "2026-06-01",
-    price_ngn: 65000,
-    images: ["images/wigs/quality-student-bob-1.jpeg","images/wigs/quality-student-bob.jpeg"],
-    badge: "",
-    available: true
-  },
+ 
   {
     id: 3,
     name: "Soft Flow Natural with HD illusion lace",
@@ -64,7 +53,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 70000,
+    price_ngn: 75000,
     images: ["images/wigs/soft-flow-natural-1.jpeg","images/wigs/soft-flow-natural-2.jpeg","images/wigs/soft-flow-natural.jpeg"],
     badge: "",
     available: true
@@ -76,7 +65,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "straight",
     date_added: "2026-06-01",
-    price_ngn: 65000,
+    price_ngn: 70000,
     image: "images/wigs/brown-balayage-bussdown.jpeg",
     badge: "",
     available: true
@@ -88,7 +77,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 60000,
+    price_ngn: 65000,
     images: ["images/wigs/dream-wig-black-1.jpeg","images/wigs/dream-wig-black-2.jpeg","images/wigs/dream-wig-black.jpeg"],
     badge: "",
     available: true
@@ -100,7 +89,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "straight",
     date_added: "2026-06-01",
-    price_ngn: 65000,
+    price_ngn: 70000,
     images: ["images/wigs/silky-straight-bussdown-1.jpeg","images/wigs/silky-straight-bussdown-2.jpeg","images/wigs/silky-straight-bussdown.jpeg"],
     badge: "",
     available: true
@@ -112,7 +101,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "straight",
     date_added: "2026-06-01",
-    price_ngn: 65000,
+    price_ngn: 70000,
     images: ["images/wigs/silly-straight-bussdown-brown-highlight-1.jpeg","images/wigs/silly-straight-bussdown-brown-highlight.jpeg"],
     badge: "",
     available: true
@@ -124,7 +113,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 75000,
+    price_ngn: 80000,
     images: ["images/wigs/lush-curls-pink-1.jpeg","images/wigs/lush-curls-pink.jpeg","images/wigs/lush-curls-pink-2.jpeg"],
     badge: "",
     available: true
@@ -136,7 +125,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 60000,
+    price_ngn: 65000,
     images: ["images/wigs/brown-blonde-girl-1.jpeg","images/wigs/brown-blonde-girl-2.jpeg"],
     badge: "",
     available: true
@@ -148,7 +137,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 70000,
+    price_ngn: 75000,
     images: ["images/wigs/soft-flow-blonde-1.jpeg","images/wigs/soft-flow-blonde.jpeg","images/wigs/soft-flow-blonde-2.jpeg"],
     badge: "",
     available: true
@@ -160,7 +149,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 70000,
+    price_ngn: 75000,
     images: ["images/wigs/soft-flow-brown-highlights-1.jpeg","images/wigs/soft-flow-brown-highlights.jpeg","images/wigs/soft-flow-brown-highlights-2.jpeg"],
     badge: "",
     available: true
@@ -351,7 +340,7 @@ const PRODUCTS = [
     description: "Please note that due to camera/phone/lighting, colour may appear slightly different. Hair length also appears longer on mannequins.",
     category: "curly",
     date_added: "2026-06-01",
-    price_ngn: 55000,
+    price_ngn: 60000,
     images: ["images/wigs/wig-flare-1.jpeg","images/wigs/wig-flare.jpeg","images/wigs/wig-flare-2.jpeg"],
     badge: "",
     available: true
@@ -363,7 +352,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-07-15",
-    price_ngn: 75000,
+    price_ngn: 80000,
     images: ["images/wigs/dark-wig.jpeg","images/wigs/dark-wig-1.jpeg"],
     badge: "",
     available: true
@@ -375,7 +364,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-07-15",
-    price_ngn: 65000,
+    price_ngn: 70000,
     images: ["images/wigs/brown-highlights.jpeg"],
     badge: "",
     available: true
@@ -387,7 +376,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-07-15",
-    price_ngn: 65000,
+    price_ngn: 70000,
     images: ["images/wigs/classy-wig.jpeg",
        "images/wigs/classy-wig-1.jpeg", 
       "images/wigs/classy-wig-2.jpeg"],
@@ -401,7 +390,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-07-15",
-    price_ngn: 65000,
+    price_ngn: 70000,
     images: ["images/wigs/classy-wig-hd.jpeg", 
       "images/wigs/classy-wig-hd-2.jpeg"],
     badge: "",
@@ -414,7 +403,7 @@ const PRODUCTS = [
     quality: "Blend",
     category: "curly",
     date_added: "2026-07-15",
-    price_ngn: 55000,
+    price_ngn: 60000,
     images: ["images/wigs/brown-sugar.jpeg", 
       "images/wigs/brown-sugar-1.jpeg", 
     "images/wigs/brown-sugar-2.jpeg"],
@@ -525,7 +514,7 @@ const DELIVERY_INFO = {
   nigeria: {
     title: "Lagos Delivery 🇳🇬",
     details: [
-      "Delivery within Lagos — 24 to 48 hours after dispatch",
+      "Delivery within Lagos: 5–8 business days from payment to your door step",
       "Select your area at checkout to see your delivery fee",
       "Delivery fee is added to your order total automatically",
       "Full payment required upfront to confirm and source your wig",
@@ -551,8 +540,8 @@ const FAQS = [
     a: "Because we source each wig specifically for your order, full payment is required to confirm and begin the sourcing process. This ensures your wig is secured and processed as quickly as possible. Payment details are sent via WhatsApp once you place your order."
   },
   {
-    q: "How long does processing take?",
-    a: "All orders take 5 business days to process after full payment is received. You'll be notified once your order is on its way."
+    q: "How long does delivery take?",
+    a: "For Lagos orders, from the moment your payment is confirmed to when your wig arrives at your door step is 5–8 business days. That includes sourcing, processing, and delivery — all in one window. You'll be notified at every step."
   },
   {
     q: "Do you deliver outside Lagos?",

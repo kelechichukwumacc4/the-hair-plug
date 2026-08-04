@@ -473,7 +473,7 @@ function submitCartOrder() {
     deliveryFee  = locPrice;
     locationLine = `Lagos, Nigeria 🇳🇬 — ${zone.charAt(0).toUpperCase() + zone.slice(1)} · ${locName}`;
     deliveryLine = `*Delivery Fee:* ${fmtNGN(deliveryFee)}\n*Delivery Address:* ${address}`;
-    deliveryNote = "Lagos delivery: 24–48 hours after dispatch.";
+    deliveryNote = "Lagos delivery: 5–8 business days from payment confirmation to your door step.";
 
   } else if (country === "outside-lagos") {
     const state   = document.getElementById("cart-state").value.trim();
@@ -586,7 +586,7 @@ function renderTicker() {
   const items = [
     `<span class="highlight">1 NGN = ${RATE_CONFIG.ngn_to_ghs} GHS</span>`,
     `Rate updated: <span class="highlight">${RATE_CONFIG.week_label}</span>`,
-    `Processing: <span class="highlight">5 business days</span> after full payment`,
+    `Lagos delivery in <span class="highlight">5–8 business days</span> from payment`,
     `Full payment required to confirm your order`,
     `Payment details sent via WhatsApp on order`,
 
@@ -1046,7 +1046,7 @@ function openDetail(productId) {
             <span class="detail-amount" id="detail-ghs-${p.id}">${fmtGHS(basePrice)}</span>
           </div>
         </div>
-        <p class="detail-processing">🕐 Processing: 5 business days after full payment</p>
+        <p class="detail-processing">🕐 Lagos delivery: 5–8 business days from payment to your door step</p>
         <div class="detail-actions">
           <button class="detail-fav-btn ${favoured?"fav-active":""}"
             onclick="toggleFavourite(${p.id});this.classList.toggle('fav-active');this.innerHTML=isFavourited(${p.id})?'♥ Saved':'♡ Save'"
